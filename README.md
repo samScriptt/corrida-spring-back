@@ -1,48 +1,48 @@
-# 🏎️ Backend - API de Corridas de Rua
+# 🏁 Sistema de Gestão de Corridas (Full Stack)
 
-API RESTful desenvolvida em **Spring Boot** para gerenciamento de corridas, equipes e pilotos.
-Utiliza banco de dados H2 (em memória) para facilitar testes rápidos.
+Projeto monorepo contendo Backend (Spring Boot) e Frontend (HTML/JS) para gestão de corridas de rua.
 
 ## 🛠️ Tecnologias
-* **Java 17**
-* **Spring Boot 3** (Web, Data JPA)
-* **H2 Database**
-* **Lombok**
 
-## 🚀 Como Rodar
+* **Backend:** Java 17, Spring Boot 3, H2 Database (Memória).
+* **Frontend:** HTML5, Vanilla JS, CSS (Pico.css).
 
-### Pré-requisitos
-* Java 17 (JDK)
-* Maven
+## 🚀 Como Rodar o Projeto
 
-### Passo a Passo
+Você precisará de dois terminais abertos.
 
-1. Compile e execute o projeto:
-   ```bash
-   mvn spring-boot:run
-   ```
+### 1. Iniciar o Backend (Terminal 1)
+Certifique-se de ter o **Java 17** e **Maven** instalados.
 
-2. A API estará disponível em:
-   👉 **http://localhost:8080**
+```bash
+# Na raiz do projeto:
+mvn spring-boot:run
+```
+* O Backend iniciará em: `http://localhost:8080`
+* Banco de Dados (H2): `http://localhost:8080/h2-console` (User: `sa`, Pass: `password`)
 
-3. Console do Banco de Dados (H2):
-   * URL: `http://localhost:8080/h2-console`
-   * JDBC URL: `jdbc:h2:mem:corridaruadb`
-   * User: `sa`
-   * Password: `password`
+---
 
-## 🔌 Endpoints da API
+### 2. Iniciar o Frontend (Terminal 2)
+O frontend precisa de um servidor simples para funcionar corretamente. Usaremos o Python para isso.
 
-A API segue o padrão REST. Aqui estão as rotas principais:
+```bash
+# Entre na pasta do frontend:
+cd corridarua-front
 
-| Recurso     | GET (Listar)       | POST (Criar)       |
-|-------------|--------------------|--------------------|
-| **Equipes** | `/api/equipes`     | `/api/equipes`     |
-| **Pistas** | `/api/pistas`      | `/api/pistas`      |
-| **Carros** | `/api/carros`      | `/api/carros`      |
-| **Pilotos** | `/api/pilotos`     | `/api/pilotos`     |
-| **Corridas**| `/api/corridas`    | `/api/corridas`    |
-| **Inscrições**| `/api/inscricaos`| `/api/inscricaos`|
+# Inicie o servidor simples (Python 3):
+python3 -m http.server 8000
+```
 
-> **Nota:** Para requisições POST, envie o JSON com o cabeçalho `Content-Type: application/json`.
+---
+
+### ✅ Acessar o Sistema
+Abra seu navegador em:
+👉 **http://localhost:8000**
+
+## 📂 Estrutura do Projeto
+
+* `/src`: Código fonte do Backend (Java/Spring).
+* `/corridarua-front`: Código fonte do Frontend (HTML/JS).
+* `/pom.xml`: Gerenciador de dependências do Backend.
 
