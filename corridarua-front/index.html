@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Corrida Rua - Frontend Simples</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@1/css/pico.min.css">
+    <style>body { padding: 20px; }</style>
+</head>
+<body>
+    <main class="container">
+        <h1>🏁 Gestão de Equipes</h1>
+        
+        <article>
+            <header>Nova Equipe</header>
+            <form onsubmit="salvarEquipe(event)">
+                <div class="grid">
+                    <label>Nome <input type="text" id="nome" required></label>
+                    <label>Cidade <input type="text" id="cidade" required></label>
+                    <label>Patrocinador <input type="text" id="patrocinador" required></label>
+                </div>
+                <button type="submit">Salvar Equipe</button>
+            </form>
+        </article>
+
+        <article>
+            <header>Equipes Cadastradas</header>
+            <table role="grid">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nome</th>
+                        <th>Cidade</th>
+                        <th>Patrocinador</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody id="tabela-corpo"></tbody>
+            </table>
+        </article>
+    </main>
+
+    <script>
+        const API_URL = 'http://localhost:8080/api/equipes';
+
+        // Carregar equipes ao iniciar
+        async function carregarEquipes() {
+            try {
+                const response = await fetch(API_URL);
+                const equipes = await response.json();
+                const tbody = document.getElementById('tabela-corpo');
+                tbody.innerHTML = '';
+                
+                equipes.forEach(eq => {
+                    tbody.innerHTML += `
+                        <tr>
+                            <td>${eq.id}</td>
+                            <td>${eq.nome}</td>
+                            <td>${eq.cidade}</td>
+                            <td>${eq.patrocinador}</td>
+                            <td><button class="secondary outline" onclick="deletarEquipe(${eq.id})">Excluir</button></td>
+                        </tr>
+                    `;
+                });
+            } catch (error) {
+                console.error('Erro ao carregar:', error);
+                alert('Erro ao conectar com o Backend. Ele está rodando?');
+            }
+        }
+
+        // Salvar nova equipe
+        async function salvarEquipe(event) {
+            event.preventDefault();
+            const dados = {
+                nome: document.getElementById('nome').value,
+                cidade: document.getElementById('cidade').value,
+                patrocinador: document.getElementById('patrocinador').value
+            };
+
+            await fetch(API_URL, {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(dados)
+            });
+
+            // Limpar formulário e recarregar tabela
+            event.target.reset();
+            carregarEquipes();
+        }
+
+        // Deletar equipe
+        async function deletarEquipe(id) {
+            if(confirm('Tem certeza?')) {
+                await fetch(`${API_URL}/${id}`, { method: 'DELETE' });
+                carregarEquipes();
+            }
+        }
+
+        // Iniciar
+        carregarEquipes();
+    </script>
+</body>
+</html>
